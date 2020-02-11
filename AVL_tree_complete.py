@@ -314,7 +314,7 @@ class Node:
             l=self.left.get_height()
         if self.right:
             r=self.right.get_height()
-        return max(l,r)
+        return max(l,r)+1
 
     def unbalanced(self):
         '''
@@ -325,9 +325,9 @@ class Node:
         l = 0
         r = 0
         if self.left:
-            l = self.left.count_levels()
+            l = self.left.get_height()
         if self.right:
-            r = self.right.count_levels()
+            r = self.right.get_height()
         if abs(l - r) > 1:
             return True
         return False
@@ -376,9 +376,9 @@ class Node:
             zl = 0
             zr = 0
             if z.left:
-                zl =z.left.count_levels()
+                zl =z.left.get_height()
             if z.right:
-                zr = z.right.count_levels()
+                zr = z.right.get_height()
             if zl>zr:
                 y = z.left
             else:
@@ -394,28 +394,29 @@ class Node:
             else:
                 x = y.right
 
-                if z.left == y:
-                    if y.left == x:
-                        # ll case
-                        z.rotate_right()
+            if z.left == y:
+                if y.left == x:
+                    # ll case
+                    z.rotate_right()
 
-
-                    else:
-                        # lr case
-                        y.rotate_left()
-                        z.rotate_right()
 
                 else:
-                    if y.right == x:
-                        # rr case
-                        z.rotate_left()
+                    # lr case
+                    y.rotate_left()
+                    z.rotate_right()
 
-                    else:
-                        # rl case
-                        y.rotate_right()
-                        z.rotate_left()
+            else:
+                if y.right == x:
+                    # rr case
+                    z.rotate_left()
+
+                else:
+                    # rl case
+                    y.rotate_right()
+                    z.rotate_left()
                 pass
-            # else done
+            if z.parent:
+                z.parent.rebalance_delete()
 
 
 
