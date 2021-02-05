@@ -1,4 +1,4 @@
-from AVL_tree import Node
+from AVL_tree_complete import Node
 root = Node(5)
 toadd = [3,8,2,4,7,11,1,6,10,12,9,13]
 #root = Node(4)
