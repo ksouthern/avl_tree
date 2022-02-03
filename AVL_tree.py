@@ -60,58 +60,58 @@ class Node:
         node, parent = self.lookup(data)
         if node is not None:
             children_count = node.children_count()
-        if children_count == 0:
-            # if node has no children, just remove it
-            if parent:
-                if parent.left is node:
-                    parent.left = None
+            if children_count == 0:
+                # if node has no children, just remove it
+                if parent:
+                    if parent.left is node:
+                        parent.left = None
+                    else:
+                        parent.right = None
+                    del node
                 else:
-                    parent.right = None
-                del node
-            else:
-                self.data = None
-        elif children_count == 1:
-            # if node has 1 child
-            # replace node with its child
-            if node.left:
-                n = node.left
-            else:
-                n = node.right
-            if parent:
-                n.parent = parent
-                if parent.left is node:
-                    parent.left = n
+                    self.data = None
+            elif children_count == 1:
+                # if node has 1 child
+                # replace node with its child
+                if node.left:
+                    n = node.left
                 else:
-                    parent.right = n
-                del node
+                    n = node.right
+                if parent:
+                    n.parent = parent
+                    if parent.left is node:
+                        parent.left = n
+                    else:
+                        parent.right = n
+                    del node
+                else:
+                    self.left = n.left
+                    if self.left:
+                        self.left.parent = self
+                    self.right = n.right
+                    if self.right:
+                        self.right.parent = self
+                    self.data = n.data
+                    self.parent = self.parent
             else:
-                self.left = n.left
-                if self.left:
-                    self.left.parent = self
-                self.right = n.right
-                if self.right:
-                    self.right.parent = self
-                self.data = n.data
-                self.parent = self.parent
-        else:
-            # if node has 2 children
-            # find its successor
-            parent = node
-            successor = node.right
-            while successor.left:
-                parent = successor
-                successor = successor.left
-            # replace node data by its successor data
-            node.data = successor.data
-            # fix successor's parent's child
-            if parent.left == successor:
-                parent.left = successor.right
-                if parent.left:
-                    successor.right.parent = parent
-            else:
-                parent.right = successor.right
-                if parent.right:
-                    parent.right.parent = parent
+                # if node has 2 children
+                # find its successor
+                parent = node
+                successor = node.right
+                while successor.left:
+                    parent = successor
+                    successor = successor.left
+                # replace node data by its successor data
+                node.data = successor.data
+                # fix successor's parent's child
+                if parent.left == successor:
+                    parent.left = successor.right
+                    if parent.left:
+                        successor.right.parent = parent
+                else:
+                    parent.right = successor.right
+                    if parent.right:
+                        parent.right.parent = parent
 
     def children_count(self):
         """
