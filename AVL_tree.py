@@ -3,7 +3,6 @@ Based on the code provided at: https://github.com/laurentluce/python-algorithms/
 Extended to AVL trees by Karl Southern
 """
 from tkinter import *
-import copy
 
 
 class Node:
@@ -15,21 +14,20 @@ class Node:
         """
         Node constructor
 
-        @param data node data object
+        :param data: node data object
         """
         self.left = None
         self.right = None
         self.data = data
         self.parent = None
 
-
     def lookup(self, data, parent=None):
         """
         Lookup node containing data
 
-        @param data node data object to look up
-        @param parent node's parent
-        @returns node and node's parent if found or None, None
+        :param data: node data object to look up
+        :param parent: node's parent
+        :returns: node and node's parent if found or None, None
         """
         if data < self.data:
             if self.left is None:
@@ -54,7 +52,7 @@ class Node:
         """
         Delete node containing data
 
-        @param data node's content to delete
+        :param data: node's content to delete
         """
         # get node containing data
         node, parent = self.lookup(data)
@@ -117,7 +115,7 @@ class Node:
         """
         Returns the number of children
 
-        @returns number of children: 0, 1, 2
+        :returns: number of children: 0, 1, 2
         """
         cnt = 0
         if self.left:
@@ -157,16 +155,16 @@ class Node:
         return tosend
 
     def get_lines(self, x, y, sw, sh):
-        tosend = []
+        to_send = []
         if self.left:
             l = self.left.get_coords(x - sw / 2, y + sh, sw / 2, sh)
-            tosend = tosend + [[x, y, l[0][0], l[0][1]]]
-            tosend = tosend + self.left.get_lines(x - sw / 2, y + sh, sw / 2, sh)
+            to_send = to_send + [[x, y, l[0][0], l[0][1]]]
+            to_send = to_send + self.left.get_lines(x - sw / 2, y + sh, sw / 2, sh)
         if self.right:
             r = self.right.get_coords(x + sw / 2, y + sh, sw / 2, sh)
-            tosend = tosend + [[x, y, r[0][0], r[0][1]]]
-            tosend = tosend + self.right.get_lines(x + sw / 2, y + sh, sw / 2, sh)
-        return tosend
+            to_send = to_send + [[x, y, r[0][0], r[0][1]]]
+            to_send = to_send + self.right.get_lines(x + sw / 2, y + sh, sw / 2, sh)
+        return to_send
 
     def show_tree(self):
         self.refresh_parents()
@@ -175,13 +173,13 @@ class Node:
         sh = 512 * 1.25
         sw = 512 * 1.5
         r = sw / w / 2
-        if r >=10:
+        if r >= 10:
             r = 10
         window = Tk()
         window.title("Binary Tree")  # Set a title
         canvas = Canvas(window, width=sw + 100, height=sh + 100, bg="white")
         canvas.pack()
-        sh = int((sh - 2 * h * r) / (h))
+        sh = int((sh - 2 * h * r) / h)
         toshow = self.get_lines(50 + sw / 2, 50 + r, sw / 2, sh)
         for i in toshow:
             x1 = i[0]
@@ -199,12 +197,12 @@ class Node:
             canvas.create_text(x, y, text=text)
 
         window.mainloop()
+
     def insert(self, data):
         """
         Insert new node with data
 
-        @param data node data object to insert
-
+        :param data: node data object to insert
         """
         if self.data:
             if data < self.data:
@@ -286,31 +284,30 @@ class Node:
         if self.left:
             self.left.parent = new_root.left
 
-    ########################################################################################################################
-    #                                                                                                                      #
-    #                                          EDIT THE CODE BELOW                                                         #
-    #                                                                                                                      #
-    ########################################################################################################################
-    """
-    1)Implement get_height
-    2)Implement unbalanced
-    3)Finish rebalance_inset and rebalance_delete
-    4)Edit insert and delete to call the rebalance functions
+    #####################################################################################################
+    #                                                                                                   #
+    #                                EDIT THE CODE BELOW                                                #
+    #                                                                                                   #
+    #####################################################################################################
 
-    """
+    # 1)Implement get_height
+    # 2)Implement unbalanced
+    # 3)Finish rebalance_inset and rebalance_delete
+    # 4)Edit insert and delete to call the rebalance functions
+
     def get_height(self):
-        '''
+        """
         Should run on the node and return the height of the node.
         :return integer:
-        '''
+        """
         ...
 
     def unbalanced(self):
-        '''
+        """
         Should run on the node and return True if the subtree rooted at the node is unbalance, return False if
         the subtree rooted at this node is balanced.
         :return boolean:
-        '''
+        """
         ...
 
     def rebalance_insert(self):
@@ -322,7 +319,7 @@ class Node:
             return
         z = y.parent
         while (not z.unbalanced()) and z.parent:
-            (x,y,z) = (y,z,z.parent)
+            (x, y, z) = (y, z, z.parent)
         if z.unbalanced():
             if z.left == y:
                 if y.left == x:
@@ -339,8 +336,7 @@ class Node:
                     # rl case
                     ...
             pass
-        #else done
-
+        # else done
 
     def rebalance_delete(self):
         z = self
@@ -350,10 +346,10 @@ class Node:
             zl = 0
             zr = 0
             if z.left:
-                zl =z.left.get_height()
+                zl = z.left.get_height()
             if z.right:
                 zr = z.right.get_height()
-            if zl>zr:
+            if zl > zr:
                 y = z.left
             else:
                 y = z.right
@@ -383,6 +379,4 @@ class Node:
                     # rl case
                     ...
             pass
-        #else done
-
-
+        # else done
