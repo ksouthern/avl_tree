@@ -335,7 +335,6 @@ class Node:
                 else:
                     # rl case
                     ...
-            pass
         # else done
 
     def rebalance_delete(self):
@@ -378,5 +377,4 @@ class Node:
                 else:
                     # rl case
                     ...
-            pass
         # else done
