@@ -199,13 +199,19 @@ class Node:
         """
         Count the number of levels in the tree
         """
-        lcount = 0
-        rcount = 0
-        if self.left:
-            lcount = self.left.count_levels()
-        if self.right:
-            rcount = self.right.count_levels()
-        return 1 + max(lcount, rcount)
+        if (self.left is None) and (self.right is None):
+            return 1
+
+        if self.left is None:
+            return self.right.count_levels() + 1
+
+        if self.right is None:
+            return self.left.count_levels() + 1
+
+        left_count = self.left.count_levels()
+        right_count = self.right.count_levels()
+
+        return max(left_count, right_count) + 1
 
     def get_coords(self, x, y, sw, sh):
         tosend = [[x, y, self.data]]
