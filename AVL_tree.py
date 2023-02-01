@@ -3,6 +3,39 @@ Based on the code provided at: https://github.com/laurentluce/python-algorithms/
 Extended to AVL trees by Karl Southern
 """
 from tkinter import Tk, Canvas
+from enum import Enum, auto as enum_auto
+
+
+class RestructuringCase(Enum):
+    Balanced = enum_auto()
+    LeftLeft = enum_auto()
+    LeftRight = enum_auto()
+    RightLeft = enum_auto()
+    RightRight = enum_auto()
+
+    @classmethod
+    def determine_case(cls, x, y, z):
+        """
+        Takes three nodes such that x.parent = y, y.parent = z and returns the 'restructuring' case that is exhibited
+
+        :param x: Bottommost node
+        :param y: Middle node
+        :param z: Topmost node
+        :return: exhibited RestructuringCase
+        """
+        if not z.unbalanced():
+            return cls.Balanced
+
+        if z.left == y:
+            if y.left == x:
+                return cls.LeftLeft
+            else:
+                return cls.LeftRight
+        else:
+            if y.right == x:
+                return cls.RightRight
+            else:
+                return cls.RightLeft
 
 
 class Node:
@@ -343,6 +376,29 @@ class Node:
 
         self.__replace_with_node(new_root)
 
+    def get_highest_child(self):
+        """
+        get the highest of the two child nodes
+
+        :return: child Node with the greatest height
+        :raises ValueError: node has no children
+        """
+        if (self.left is None) and (self.right is None):
+            raise ValueError("node has no children")
+
+        if self.left is None:
+            return self.right
+
+        if self.right is None:
+            return self.left
+
+        left_height, right_height = self.left.get_height(), self.right.get_height()
+        if left_height > right_height:
+            return self.left
+        else:
+            return self.right
+
+
     #####################################################################################################
     #                                                                                                   #
     #                                EDIT THE CODE BELOW                                                #
@@ -379,61 +435,49 @@ class Node:
         z = y.parent
         while (not z.unbalanced()) and z.parent:
             (x, y, z) = (y, z, z.parent)
-        if z.unbalanced():
-            if z.left == y:
-                if y.left == x:
-                    # ll case
-                    ...
-                else:
-                    # lr case
-                    ...
-            else:
-                if y.right == x:
-                    # rr case
-                    ...
-                else:
-                    # rl case
-                    ...
-        # else done
+
+        case = RestructuringCase.determine_case(x, y, z)
+        if case == RestructuringCase.Balanced:
+            return
+
+        if case == RestructuringCase.LeftLeft:
+            ...
+
+        elif case == RestructuringCase.LeftRight:
+            ...
+
+        elif case == RestructuringCase.RightRight:
+            ...
+
+        elif case == RestructuringCase.RightLeft:
+            ...
+
+        # and finally
+        ...
 
     def rebalance_delete(self):
         z = self
         while (not z.unbalanced()) and z.parent:
             z = z.parent
-        if z.unbalanced():
-            zl = 0
-            zr = 0
-            if z.left:
-                zl = z.left.get_height()
-            if z.right:
-                zr = z.right.get_height()
-            if zl > zr:
-                y = z.left
-            else:
-                y = z.right
-            yl = 0
-            yr = 0
-            if y.left:
-                yl = y.left.get_height()
-            if y.right:
-                yr = y.right.get_height()
-            if yl > yr:
-                x = y.left
-            else:
-                x = y.right
 
-            if z.left == y:
-                if y.left == x:
-                    # ll case
-                    ...
-                else:
-                    # lr case
-                    ...
-            else:
-                if y.right == x:
-                    # rr case
-                    ...
-                else:
-                    # rl case
-                    ...
-        # else done
+        y = z.get_highest_child()
+        x = y.get_highest_child()
+
+        case = RestructuringCase.determine_case(x, y, z)
+        if case == RestructuringCase.Balanced:
+            return
+
+        if case == RestructuringCase.LeftLeft:
+            ...
+
+        elif case == RestructuringCase.LeftRight:
+            ...
+
+        elif case == RestructuringCase.RightRight:
+            ...
+
+        elif case == RestructuringCase.RightLeft:
+            ...
+
+        # and finally
+        ...
