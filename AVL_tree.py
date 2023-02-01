@@ -279,22 +279,31 @@ class Node:
         Insert new node with data
 
         :param data: node data object to insert
+        :raises ValueError: data is already present in the tree
         """
-        if self.data:
-            if data < self.data:
-                if self.left is None:
-                    self.left = Node(data)
-                    self.left.parent = self
-                else:
-                    self.left.insert(data)
-            elif data > self.data:
-                if self.right is None:
-                    self.right = Node(data)
-                    self.right.parent = self
-                else:
-                    self.right.insert(data)
-        else:
+        if self.data is None:
             self.data = data
+            return
+
+        if data < self.data:
+            if self.left is not None:
+                self.left.insert(data)
+                return
+
+            self.left = Node(data)
+            self.left.parent = self
+            return
+
+        if data > self.data:
+            if self.right is not None:
+                self.right.insert(data)
+                return
+
+            self.right = Node(data)
+            self.right.parent = self
+            return
+
+        raise ValueError("data is already present in the tree")
 
     def rotate_right(self):
         """
