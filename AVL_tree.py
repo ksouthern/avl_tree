@@ -309,10 +309,10 @@ class Node:
         """
         rotate the tree to the right such that this node becomes the right child of the new root
 
-        :raises Exception: Can't rotate to the right as there is no 'right' node to rotate from
+        :raises ValueError: Can't rotate to the right as there is no 'right' node to rotate from
         """
         if self.left is None:
-            raise Exception("Can't rotate to the right as there is no 'left' node to rotate from")
+            raise ValueError("Can't rotate to the right as there is no 'left' node to rotate from")
 
         new_root = Node(None)
 
@@ -328,10 +328,10 @@ class Node:
         """
         rotate the tree to the left such that this node becomes the left child of the new root
 
-        :raises Exception: Can't rotate to the left as there is no 'right' node to rotate from
+        :raises ValueError: Can't rotate to the left as there is no 'right' node to rotate from
         """
         if self.right is None:
-            raise Exception("Can't rotate to the left as there is no 'right' node to rotate from")
+            raise ValueError("Can't rotate to the left as there is no 'right' node to rotate from")
 
         new_root = Node(None)
 
