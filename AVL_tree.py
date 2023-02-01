@@ -2,7 +2,7 @@
 Based on the code provided at: https://github.com/laurentluce/python-algorithms/blob/master/algorithms/binary_tree.py
 Extended to AVL trees by Karl Southern
 """
-from tkinter import *
+from tkinter import Tk, Canvas
 
 
 class Node:
