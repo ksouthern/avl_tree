@@ -43,6 +43,22 @@ class Node:
 
         return self
 
+    def __replace(self, with_node):
+        """
+        Replace this node's data and descendants with attributes from another node
+
+        :param with_node: the node to take attributes from
+        """
+        self.left = with_node.left
+        if self.left is not None:
+            self.left.parent = self
+
+        self.right = with_node.right
+        if self.right is not None:
+            self.right.parent = self
+
+        self.data = with_node.data
+
     def refresh_parents(self):
         if self.left is not None:
             self.left.parent = self
@@ -52,68 +68,72 @@ class Node:
             self.right.parent = self
             self.right.refresh_parents()
 
+    def __no_children_delete(self):
+        """
+        Remove this node from the tree, assuming it has no children
+        """
+        # just remove it
+        if not self.parent:
+            del self
+            return
+
+        if self.parent.left is self:
+            self.parent.left = None
+        else:
+            self.parent.right = None
+        del self
+
+    def __one_child_delete(self):
+        """
+        Remove this node from the tree, assuming it has exactly one child
+        """
+        # replace node with its child
+        child = self.left or self.right
+        self.__replace(child)
+
+    def __two_children_delete(self):
+        """
+        Remove this node from the tree, assuming it has exactly two children
+        """
+        # find its successor: once to the right, then all the way left
+        successor = self.right
+        while successor.left is not None:
+            successor = successor.left
+        # replace node data by its successor data
+        self.data = successor.data
+        # fix successor's parent's child
+        if successor.parent is self:
+            self.right = successor.right
+            if self.right:
+                self.right.parent = self
+            return
+
+        successor.parent.left = successor.right
+        if successor.parent.left:
+            successor.parent.left.parent = successor.right
+
     def delete(self, data):
         """
         Delete node containing data
 
         :param data: node's content to delete
+        :raise ValueError: data is not in tree
         """
         # get node containing data
-        node, parent = self.lookup(data)
-        if node is not None:
-            children_count = node.children_count()
+        node = self.lookup(data)
+        if node is None:
+            raise ValueError("data is not in tree")
+
+        children_count = node.children_count()
         if children_count == 0:
-            # if node has no children, just remove it
-            if parent:
-                if parent.left is node:
-                    parent.left = None
-                else:
-                    parent.right = None
-                del node
-            else:
-                self.data = None
-        elif children_count == 1:
-            # if node has 1 child
-            # replace node with its child
-            if node.left:
-                n = node.left
-            else:
-                n = node.right
-            if parent:
-                n.parent = parent
-                if parent.left is node:
-                    parent.left = n
-                else:
-                    parent.right = n
-                del node
-            else:
-                self.left = n.left
-                if self.left:
-                    self.left.parent = self
-                self.right = n.right
-                if self.right:
-                    self.right.parent = self
-                self.data = n.data
-                self.parent = self.parent
-        else:
-            # if node has 2 children
-            # find its successor
-            parent = node
-            successor = node.right
-            while successor.left:
-                parent = successor
-                successor = successor.left
-            # replace node data by its successor data
-            node.data = successor.data
-            # fix successor's parent's child
-            if parent.left == successor:
-                parent.left = successor.right
-                if parent.left:
-                    successor.right.parent = parent
-            else:
-                parent.right = successor.right
-                if parent.right:
-                    parent.right.parent = parent
+            node.__no_children_delete()
+            return
+
+        if children_count == 1:
+            node.__one_child_delete()
+            return
+
+        node.__two_children_delete()
 
     def children_count(self):
         """
