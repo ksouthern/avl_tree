@@ -44,10 +44,11 @@ class Node:
         return self
 
     def refresh_parents(self):
-        if self.left:
+        if self.left is not None:
             self.left.parent = self
             self.left.refresh_parents()
-        if self.right:
+
+        if self.right is not None:
             self.right.parent = self
             self.right.refresh_parents()
 
