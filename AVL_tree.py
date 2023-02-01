@@ -214,12 +214,12 @@ class Node:
         return max(left_count, right_count) + 1
 
     def get_coords(self, x, y, sw, sh):
-        tosend = [[x, y, self.data]]
+        to_send = [[x, y, self.data]]
         if self.left:
-            tosend = tosend + (self.left.get_coords(x - sw / 2, y + sh, sw / 2, sh))
+            to_send += (self.left.get_coords(x - sw / 2, y + sh, sw / 2, sh))
         if self.right:
-            tosend = tosend + (self.right.get_coords(x + sw / 2, y + sh, sw / 2, sh))
-        return tosend
+            to_send += (self.right.get_coords(x + sw / 2, y + sh, sw / 2, sh))
+        return to_send
 
     def get_lines(self, x, y, sw, sh):
         to_send = []
