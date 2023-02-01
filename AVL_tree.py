@@ -121,12 +121,7 @@ class Node:
 
         :returns: number of children: 0, 1, 2
         """
-        cnt = 0
-        if self.left:
-            cnt += 1
-        if self.right:
-            cnt += 1
-        return cnt
+        return int(self.left is not None) + int(self.right is not None)
 
     def print_tree(self):
         """
