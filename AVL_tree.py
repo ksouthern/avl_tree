@@ -239,28 +239,27 @@ class Node:
         max_tree_width = 2 ** (tree_height - 1)
         window_height = 512 * 1.25
         window_width = 512 * 1.5
-        r = window_width / max_tree_width / 2
-        if r >= 10:
-            r = 10
+        node_radius = window_width / max_tree_width / 2
+        node_radius = min(node_radius, 10)
         window = Tk()
         window.title("Binary Tree")  # Set a title
         canvas = Canvas(window, width=window_width + 100, height=window_height + 100, bg="white")
         canvas.pack()
-        window_height = int((window_height - 2 * tree_height * r) / tree_height)
-        to_show = self.get_lines(50 + window_width / 2, 50 + r, window_width / 2, window_height)
-        for i in to_show:
-            x1 = i[0]
-            y1 = i[1]
-            x2 = i[2]
-            y2 = i[3]
+        window_height = int((window_height - 2 * tree_height * node_radius) / tree_height)
+        lines_to_draw = self.get_lines(50 + window_width / 2, 50 + node_radius, window_width / 2, window_height)
+        for line_to_draw in lines_to_draw:
+            x1 = line_to_draw[0]
+            y1 = line_to_draw[1]
+            x2 = line_to_draw[2]
+            y2 = line_to_draw[3]
             canvas.create_line(x1, y1, x2, y2)
-        to_show = self.get_coords(50 + window_width / 2, 50 + r, window_width / 2, window_height)
-        for i in to_show:
-            x = i[0]
-            y = i[1]
-            text = i[2]
-            if r == 10:
-                canvas.create_oval(x - r, y - r, x + r, y + r, fill="white")
+        nodes_to_draw = self.get_coords(50 + window_width / 2, 50 + node_radius, window_width / 2, window_height)
+        for node_to_draw in nodes_to_draw:
+            x = node_to_draw[0]
+            y = node_to_draw[1]
+            text = node_to_draw[2]
+            if node_radius == 10:
+                canvas.create_oval(x - node_radius, y - node_radius, x + node_radius, y + node_radius, fill="white")
             canvas.create_text(x, y, text=text)
 
         window.mainloop()
