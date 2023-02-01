@@ -21,24 +21,27 @@ class Node:
         self.data = data
         self.parent = None
 
-    def lookup(self, data, parent=None):
+    def lookup(self, data):
         """
         Lookup node containing data
 
         :param data: node data object to look up
-        :param parent: node's parent
-        :returns: node and node's parent if found or None, None
+        :returns: node if found
+        :raise ValueError: data is not in tree
         """
         if data < self.data:
             if self.left is None:
-                return None, None
-            return self.left.lookup(data, self)
-        elif data > self.data:
+                raise ValueError(f"{data} is not in tree")
+
+            return self.left.lookup(data)
+
+        if data > self.data:
             if self.right is None:
-                return None, None
-            return self.right.lookup(data, self)
-        else:
-            return self, parent
+                raise ValueError(f"{data} is not in tree")
+
+            return self.right.lookup(data)
+
+        return self
 
     def refresh_parents(self):
         if self.left:
