@@ -140,7 +140,7 @@ class Node:
 
     def children_count(self):
         """
-        Returns the number of children
+        Returns the number of children a node has
 
         :returns: number of children: 0, 1, 2
         """
