@@ -199,9 +199,9 @@ class Node:
         """
         yield node.data
         if node.left is not None:
-            yield from cls.pre_order_traverse(node)
+            yield from cls.pre_order_traverse(node.left)
         if node.right is not None:
-            yield from cls.pre_order_traverse(node)
+            yield from cls.pre_order_traverse(node.right)
 
     @classmethod
     def in_order_traverse(cls, node):
@@ -212,10 +212,10 @@ class Node:
         :return: an iterator that traverses the (sub)tree
         """
         if node.left is not None:
-            yield from cls.in_order_traverse(node)
+            yield from cls.in_order_traverse(node.left)
         yield node.data
         if node.right is not None:
-            yield from cls.in_order_traverse(node)
+            yield from cls.in_order_traverse(node.right)
 
     @classmethod
     def post_order_traverse(cls, node):
@@ -226,9 +226,9 @@ class Node:
         :return: an iterator that traverses the (sub)tree
         """
         if node.left is not None:
-            yield from cls.post_order_traverse(node)
+            yield from cls.post_order_traverse(node.left)
         if node.right is not None:
-            yield from cls.post_order_traverse(node)
+            yield from cls.post_order_traverse(node.right)
         yield node.data
 
     def print_tree(self):
