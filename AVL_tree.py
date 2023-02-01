@@ -146,15 +146,54 @@ class Node:
         """
         return int(self.left is not None) + int(self.right is not None)
 
+    @classmethod
+    def pre_order_traverse(cls, node):
+        """
+        Traverse a node's (sub)tree in pre-order
+
+        :param node: the node whose (sub)tree you wish to traverse
+        :return: an iterator that traverses the (sub)tree
+        """
+        yield node.data
+        if node.left is not None:
+            yield from cls.pre_order_traverse(node)
+        if node.right is not None:
+            yield from cls.pre_order_traverse(node)
+
+    @classmethod
+    def in_order_traverse(cls, node):
+        """
+        Traverse a node's (sub)tree in-order
+
+        :param node: the node whose (sub)tree you wish to traverse
+        :return: an iterator that traverses the (sub)tree
+        """
+        if node.left is not None:
+            yield from cls.in_order_traverse(node)
+        yield node.data
+        if node.right is not None:
+            yield from cls.in_order_traverse(node)
+
+    @classmethod
+    def post_order_traverse(cls, node):
+        """
+        Traverse a node's (sub)tree in post-order
+
+        :param node: the node whose (sub)tree you wish to traverse
+        :return: an iterator that traverses the (sub)tree
+        """
+        if node.left is not None:
+            yield from cls.post_order_traverse(node)
+        if node.right is not None:
+            yield from cls.post_order_traverse(node)
+        yield node.data
+
     def print_tree(self):
         """
         Print tree content inorder
         """
-        if self.left:
-            self.left.print_tree()
-        print(self.data),
-        if self.right:
-            self.right.print_tree()
+        data = list(self.in_order_traverse(self))
+        print(data)
 
     def count_levels(self):
         """
