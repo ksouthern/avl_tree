@@ -43,21 +43,31 @@ class Node:
 
         return self
 
-    def __replace(self, with_node):
+    def __replace_with_node(self, with_node):
         """
         Replace this node's data and descendants with attributes from another node
 
         :param with_node: the node to take attributes from
         """
-        self.left = with_node.left
+        self.__replace(with_node.data, with_node.left, with_node.right)
+
+    def __replace(self, data, left, right):
+        """
+        Replace this node's data and descendants
+
+        :param data: the new node data
+        :param left: the new 'left' node
+        :param right: the new 'right' node
+        """
+        self.left = left
         if self.left is not None:
             self.left.parent = self
 
-        self.right = with_node.right
+        self.right = right
         if self.right is not None:
             self.right.parent = self
 
-        self.data = with_node.data
+        self.data = data
 
     def refresh_parents(self):
         """
@@ -92,7 +102,7 @@ class Node:
         """
         # replace node with its child
         child = self.left or self.right
-        self.__replace(child)
+        self.__replace_with_node(child)
 
     def __two_children_delete(self):
         """
@@ -289,66 +299,40 @@ class Node:
     def rotate_right(self):
         """
         rotate the tree to the right such that this node becomes the right child of the new root
-        N.B you can't do self = new_root, so you will need to do:
-        self.data = new_root.data
-        self.left = new_root.left
-        self.right = new_root.right
-        self.parent = new_root.parent
-        """
-        new_root = Node(self.left.data)
-        new_root.parent = self.parent
-        old_root = Node(self.data)
-        new_root.right = old_root
-        old_root.parent = new_root
-        old_root.left = self.left.right
-        if old_root.left:
-            old_root.left.parent = old_root
-        old_root.right = self.right
-        if old_root.right:
-            old_root.right.parent = old_root
-        new_root.left = self.left.left
-        if new_root.left:
-            new_root.left.parent = new_root
 
-        self.data = new_root.data
-        self.left = new_root.left
-        if self.left:
-            self.left.parent = self
-        self.right = new_root.right
-        if self.right:
-            self.right.parent = new_root.right
+        :raises Exception: Can't rotate to the right as there is no 'right' node to rotate from
+        """
+        if self.left is None:
+            raise Exception("Can't rotate to the right as there is no 'left' node to rotate from")
+
+        new_root = Node(None)
+
+        old_root = Node(None)
+        old_root.parent = new_root
+
+        new_root.__replace(data=self.left.data, left=self.left.left, right=old_root)
+        old_root.__replace(data=self.data, left=self.left.right, right=self.right)
+
+        self.__replace_with_node(new_root)
 
     def rotate_left(self):
         """
         rotate the tree to the left such that this node becomes the left child of the new root
-        N.B you can't do self = new_root, so you will need to do:
-        self.data = new_root.data
-        self.left = new_root.left
-        self.right = new_root.right
-        self.parent = new_root.parent
-        """
-        new_root = Node(self.right.data)
-        new_root.parent = self.parent
-        old_root = Node(self.data)
-        new_root.left = old_root
-        old_root.parent = new_root
-        old_root.right = self.right.left
-        if old_root.right:
-            old_root.right.parent = old_root
-        old_root.left = self.left
-        if old_root.left:
-            old_root.left.parent = old_root
-        new_root.right = self.right.right
-        if new_root.right:
-            new_root.right.parent = new_root
 
-        self.data = new_root.data
-        self.right = new_root.right
-        if self.right:
-            self.right.parent = self
-        self.left = new_root.left
-        if self.left:
-            self.left.parent = new_root.left
+        :raises Exception: Can't rotate to the left as there is no 'right' node to rotate from
+        """
+        if self.right is None:
+            raise Exception("Can't rotate to the left as there is no 'right' node to rotate from")
+
+        new_root = Node(None)
+
+        old_root = Node(None)
+        old_root.parent = new_root
+
+        new_root.__replace(data=self.right.data, left=old_root, right=self.right.right)
+        old_root.__replace(data=self.data, left=self.left, right=self.right.left)
+
+        self.__replace_with_node(new_root)
 
     #####################################################################################################
     #                                                                                                   #
