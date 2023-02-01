@@ -60,6 +60,9 @@ class Node:
         self.data = with_node.data
 
     def refresh_parents(self):
+        """
+        Refresh the parents of all descendant nodes
+        """
         if self.left is not None:
             self.left.parent = self
             self.left.refresh_parents()
