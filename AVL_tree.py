@@ -224,13 +224,13 @@ class Node:
     def get_lines(self, x, y, sw, sh):
         to_send = []
         if self.left:
-            l = self.left.get_coords(x - sw / 2, y + sh, sw / 2, sh)
-            to_send = to_send + [[x, y, l[0][0], l[0][1]]]
-            to_send = to_send + self.left.get_lines(x - sw / 2, y + sh, sw / 2, sh)
+            left_coords = self.left.get_coords(x - sw / 2, y + sh, sw / 2, sh)
+            to_send += [[x, y, left_coords[0][0], left_coords[0][1]]]
+            to_send += self.left.get_lines(x - sw / 2, y + sh, sw / 2, sh)
         if self.right:
-            r = self.right.get_coords(x + sw / 2, y + sh, sw / 2, sh)
-            to_send = to_send + [[x, y, r[0][0], r[0][1]]]
-            to_send = to_send + self.right.get_lines(x + sw / 2, y + sh, sw / 2, sh)
+            right_coords = self.right.get_coords(x + sw / 2, y + sh, sw / 2, sh)
+            to_send += [[x, y, right_coords[0][0], right_coords[0][1]]]
+            to_send += self.right.get_lines(x + sw / 2, y + sh, sw / 2, sh)
         return to_send
 
     def show_tree(self):
