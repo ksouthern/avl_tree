@@ -407,6 +407,7 @@ class Node:
 
     # 1)Implement get_height
     # 2)Implement unbalanced
+    # 3)Implement balance's cases
     # 3)Finish rebalance_insert and rebalance_delete
     # 4)Edit insert and delete to call the rebalance functions
 
@@ -425,6 +426,37 @@ class Node:
         """
         ...
 
+    @classmethod
+    def balance(cls, x, y, z):
+        """
+        Takes three nodes such that x.parent = y, y.parent = z and balances them
+
+        :param x: Bottommost node
+        :param y: Middle node
+        :param z: Topmost node
+        """
+        case = RestructuringCase.determine_case(x, y, z)
+        if case == RestructuringCase.Balanced:
+            return
+
+        if case == RestructuringCase.LeftLeft:
+            ...
+            return
+
+        if case == RestructuringCase.LeftRight:
+            ...
+            return
+
+        if case == RestructuringCase.RightRight:
+            ...
+            return
+
+        if case == RestructuringCase.RightLeft:
+            ...
+            return
+
+        raise NotImplementedError("Unexpected restructuring case")
+
     def rebalance_insert(self):
         x = self
         if not x.parent:
@@ -436,22 +468,7 @@ class Node:
         while (not z.unbalanced()) and z.parent:
             (x, y, z) = (y, z, z.parent)
 
-        case = RestructuringCase.determine_case(x, y, z)
-        if case == RestructuringCase.Balanced:
-            return
-
-        if case == RestructuringCase.LeftLeft:
-            ...
-
-        elif case == RestructuringCase.LeftRight:
-            ...
-
-        elif case == RestructuringCase.RightRight:
-            ...
-
-        elif case == RestructuringCase.RightLeft:
-            ...
-
+        self.balance(x, y, z)
         # and finally
         ...
 
@@ -463,21 +480,6 @@ class Node:
         y = z.get_highest_child()
         x = y.get_highest_child()
 
-        case = RestructuringCase.determine_case(x, y, z)
-        if case == RestructuringCase.Balanced:
-            return
-
-        if case == RestructuringCase.LeftLeft:
-            ...
-
-        elif case == RestructuringCase.LeftRight:
-            ...
-
-        elif case == RestructuringCase.RightRight:
-            ...
-
-        elif case == RestructuringCase.RightLeft:
-            ...
-
+        self.balance(x, y, z)
         # and finally
         ...
