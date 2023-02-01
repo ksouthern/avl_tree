@@ -235,27 +235,27 @@ class Node:
 
     def show_tree(self):
         self.refresh_parents()
-        h = self.count_levels()
-        w = 2 ** (h - 1)
-        sh = 512 * 1.25
-        sw = 512 * 1.5
-        r = sw / w / 2
+        tree_height = self.count_levels()
+        max_tree_width = 2 ** (tree_height - 1)
+        window_height = 512 * 1.25
+        window_width = 512 * 1.5
+        r = window_width / max_tree_width / 2
         if r >= 10:
             r = 10
         window = Tk()
         window.title("Binary Tree")  # Set a title
-        canvas = Canvas(window, width=sw + 100, height=sh + 100, bg="white")
+        canvas = Canvas(window, width=window_width + 100, height=window_height + 100, bg="white")
         canvas.pack()
-        sh = int((sh - 2 * h * r) / h)
-        toshow = self.get_lines(50 + sw / 2, 50 + r, sw / 2, sh)
-        for i in toshow:
+        window_height = int((window_height - 2 * tree_height * r) / tree_height)
+        to_show = self.get_lines(50 + window_width / 2, 50 + r, window_width / 2, window_height)
+        for i in to_show:
             x1 = i[0]
             y1 = i[1]
             x2 = i[2]
             y2 = i[3]
             canvas.create_line(x1, y1, x2, y2)
-        toshow = self.get_coords(50 + sw / 2, 50 + r, sw / 2, sh)
-        for i in toshow:
+        to_show = self.get_coords(50 + window_width / 2, 50 + r, window_width / 2, window_height)
+        for i in to_show:
             x = i[0]
             y = i[1]
             text = i[2]
