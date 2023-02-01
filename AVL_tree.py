@@ -258,7 +258,7 @@ class Node:
             x = node_to_draw[0]
             y = node_to_draw[1]
             text = node_to_draw[2]
-            if node_radius == 10:
+            if node_radius >= 10:
                 canvas.create_oval(x - node_radius, y - node_radius, x + node_radius, y + node_radius, fill="white")
             canvas.create_text(x, y, text=text)
 
