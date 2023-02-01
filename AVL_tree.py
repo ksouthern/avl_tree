@@ -468,6 +468,9 @@ class Node:
         while (not z.unbalanced()) and z.parent:
             (x, y, z) = (y, z, z.parent)
 
+        if not z.unbalanced():
+            return
+
         self.balance(x, y, z)
         # and finally
         ...
@@ -479,6 +482,9 @@ class Node:
 
         y = z.get_highest_child()
         x = y.get_highest_child()
+
+        if not z.unbalanced():
+            return
 
         self.balance(x, y, z)
         # and finally
