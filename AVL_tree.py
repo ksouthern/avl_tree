@@ -294,7 +294,7 @@ class Node:
     """
     1)Implement get_height
     2)Implement unbalanced
-    3)Finish rebalance_inset and rebalance_delete
+    3)Finish rebalance_insert and rebalance_delete
     4)Edit insert and delete to call the rebalance functions
 
     """
